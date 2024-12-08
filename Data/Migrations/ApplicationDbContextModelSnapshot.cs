@@ -238,7 +238,7 @@ namespace Movie_Recommendation_Hub.Data.Migrations
 
                     b.HasKey("GenreID");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("Movie_Recommendation_Hub.Models.Movie", b =>
@@ -274,7 +274,7 @@ namespace Movie_Recommendation_Hub.Data.Migrations
 
                     b.HasIndex("GenreID");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("Movie_Recommendation_Hub.Models.Rating", b =>
@@ -310,7 +310,7 @@ namespace Movie_Recommendation_Hub.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Ratings");
+                    b.ToTable("Ratings", (string)null);
                 });
 
             modelBuilder.Entity("Movie_Recommendation_Hub.Models.Watchlist", b =>
@@ -340,7 +340,7 @@ namespace Movie_Recommendation_Hub.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Watchlists");
+                    b.ToTable("Watchlists", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
