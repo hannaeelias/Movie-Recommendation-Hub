@@ -17,7 +17,7 @@ namespace Movie_Recommendation_Hub.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "3.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -224,125 +224,6 @@ namespace Movie_Recommendation_Hub.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Movie_Recommendation_Hub.Models.Genre", b =>
-                {
-                    b.Property<int>("GenreID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GenreID"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("GenreID");
-
-                    b.ToTable("Genres", (string)null);
-                });
-
-            modelBuilder.Entity("Movie_Recommendation_Hub.Models.Movie", b =>
-                {
-                    b.Property<int>("MovieID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovieID"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("GenreID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PosterURL")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Rating")
-                        .HasColumnType("real");
-
-                    b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MovieID");
-
-                    b.HasIndex("GenreID");
-
-                    b.ToTable("Movies", (string)null);
-                });
-
-            modelBuilder.Entity("Movie_Recommendation_Hub.Models.Rating", b =>
-                {
-                    b.Property<int>("RatingID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RatingID"));
-
-                    b.Property<int>("MovieID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<float>("RatingValue")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Review")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("RatingID");
-
-                    b.HasIndex("MovieID");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Ratings", (string)null);
-                });
-
-            modelBuilder.Entity("Movie_Recommendation_Hub.Models.Watchlist", b =>
-                {
-                    b.Property<int>("WatchlistID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WatchlistID"));
-
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("MovieID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("WatchlistID");
-
-                    b.HasIndex("MovieID");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Watchlists", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -392,65 +273,6 @@ namespace Movie_Recommendation_Hub.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Movie_Recommendation_Hub.Models.Movie", b =>
-                {
-                    b.HasOne("Movie_Recommendation_Hub.Models.Genre", "Genre")
-                        .WithMany("Movies")
-                        .HasForeignKey("GenreID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Genre");
-                });
-
-            modelBuilder.Entity("Movie_Recommendation_Hub.Models.Rating", b =>
-                {
-                    b.HasOne("Movie_Recommendation_Hub.Models.Movie", "Movie")
-                        .WithMany("Ratings")
-                        .HasForeignKey("MovieID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Movie");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Movie_Recommendation_Hub.Models.Watchlist", b =>
-                {
-                    b.HasOne("Movie_Recommendation_Hub.Models.Movie", "Movie")
-                        .WithMany("Watchlists")
-                        .HasForeignKey("MovieID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Movie");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Movie_Recommendation_Hub.Models.Genre", b =>
-                {
-                    b.Navigation("Movies");
-                });
-
-            modelBuilder.Entity("Movie_Recommendation_Hub.Models.Movie", b =>
-                {
-                    b.Navigation("Ratings");
-
-                    b.Navigation("Watchlists");
                 });
 #pragma warning restore 612, 618
         }

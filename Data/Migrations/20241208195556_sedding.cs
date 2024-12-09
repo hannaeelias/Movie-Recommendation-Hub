@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Movie_Recommendation_Hub.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class setupµ : Migration
+    public partial class sedding : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,8 +32,8 @@ namespace Movie_Recommendation_Hub.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PosterURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PosterURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<float>(type: "real", nullable: false),
                     GenreID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -54,21 +54,21 @@ namespace Movie_Recommendation_Hub.Data.Migrations
                 {
                     RatingID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MovieID = table.Column<int>(type: "int", nullable: false),
                     RatingValue = table.Column<float>(type: "real", nullable: false),
                     Review = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    RatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ratings", x => x.RatingID);
                     table.ForeignKey(
-                        name: "FK_Ratings_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Ratings_AspNetUsers_UserID",
+                        column: x => x.UserID,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Ratings_Movies_MovieID",
                         column: x => x.MovieID,
@@ -83,17 +83,16 @@ namespace Movie_Recommendation_Hub.Data.Migrations
                 {
                     WatchlistID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MovieID = table.Column<int>(type: "int", nullable: false),
-                    AddedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    AddedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Watchlists", x => x.WatchlistID);
                     table.ForeignKey(
-                        name: "FK_Watchlists_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Watchlists_AspNetUsers_UserID",
+                        column: x => x.UserID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -116,9 +115,9 @@ namespace Movie_Recommendation_Hub.Data.Migrations
                 column: "MovieID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ratings_UserId",
+                name: "IX_Ratings_UserID",
                 table: "Ratings",
-                column: "UserId");
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Watchlists_MovieID",
@@ -126,9 +125,9 @@ namespace Movie_Recommendation_Hub.Data.Migrations
                 column: "MovieID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Watchlists_UserId",
+                name: "IX_Watchlists_UserID",
                 table: "Watchlists",
-                column: "UserId");
+                column: "UserID");
         }
 
         /// <inheritdoc />

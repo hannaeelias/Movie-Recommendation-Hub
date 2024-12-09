@@ -5,7 +5,7 @@ namespace Movie_Recommendation_Hub.Models
     public class Watchlist
     {
         public int WatchlistID { get; set; }
-        public int UserID { get; set; }
+        public required string UserID { get; set; }
         public int MovieID { get; set; }
         public DateTime AddedAt { get; set; }
 

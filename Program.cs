@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Movie_Recommendation_Hub.Data;
 
 namespace Movie_Recommendation_Hub
@@ -16,11 +17,23 @@ namespace Movie_Recommendation_Hub
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = true;
+
+                options.Password.RequireDigit = false;           
+                options.Password.RequireLowercase = false;       
+                options.Password.RequireUppercase = false;      
+                options.Password.RequireNonAlphanumeric = false; 
+                options.Password.RequiredLength = 6;              
+                options.Password.RequiredUniqueChars = 1;       
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
             var app = builder.Build();
+
+            // Initialize the database with seeding data
+            InitializeDatabase(app);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -47,8 +60,17 @@ namespace Movie_Recommendation_Hub
             app.MapRazorPages();
 
             app.Run();
+        }
 
-
+        private static void InitializeDatabase(IHost app)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<ApplicationDbContext>();
+                var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+                ApplicationDbContext.Initialize(services, context, userManager);
+            }
         }
     }
 }

@@ -45,11 +45,14 @@ namespace Movie_Recommendation_Hub.Data
                 var actionGenre = context.Genres.FirstOrDefault(g => g.Name == "Action");
                 var comedyGenre = context.Genres.FirstOrDefault(g => g.Name == "Comedy");
 
-                context.Movies.AddRange(
-                    new Movie { Title = "Inception", ReleaseDate = new DateTime(2010, 7, 16), Genre = actionGenre, Rating = 4.5f },
-                    new Movie { Title = "The Hangover", ReleaseDate = new DateTime(2009, 6, 5), Genre = comedyGenre, Rating = 4.2f }
-                );
-                context.SaveChanges();
+                if (actionGenre != null && comedyGenre != null)
+                {
+                    context.Movies.AddRange(
+                        new Movie { Title = "Inception", ReleaseDate = new DateTime(2010, 7, 16), Genre = actionGenre, Rating = 4.5f },
+                        new Movie { Title = "The Hangover", ReleaseDate = new DateTime(2009, 6, 5), Genre = comedyGenre, Rating = 4.2f }
+                    );
+                    context.SaveChanges();
+                }
             }
 
             // Seed Users if none exist
@@ -57,22 +60,20 @@ namespace Movie_Recommendation_Hub.Data
             {
                 var user1 = new IdentityUser
                 {
-                    UserName = "admin",
+                    EmailConfirmed = true,
+                    UserName = "admin.admin@example.com",
                     Email = "admin.admin@example.com"
                 };
 
-
-
-                // Create User with Password
                 var result1 = userManager.CreateAsync(user1, "Password123!").Result;
 
                 if (result1.Succeeded)
                 {
-                    // Optionally assign roles if you're using role-based authorization
-                    userManager.AddToRoleAsync(user1, "User").Wait();
+                    userManager.AddToRoleAsync(user1, "User");
                 }
             }
         }
 
     }
+
 }
